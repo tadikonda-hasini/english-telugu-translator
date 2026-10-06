@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>English ↔ Telugu Translator</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='Style.css') }}">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>English ↔ Telugu Translator</h1>
+
+        <p class="subtitle">
+            Translate sentences between English and Telugu
+        </p>
+
+        <div class="translator-box">
+
+            <div class="language-selection">
+
+                <button id="englishToTelugu" class="active">
+                    English → Telugu
+                </button>
+
+                <button id="teluguToEnglish">
+                    Telugu → English
+                </button>
+
+            </div>
+
+            <textarea
+                id="inputText"
+                placeholder="Enter your sentence here..."
+            ></textarea>
+
+            <button id="translateButton">
+                Translate
+            </button>
+
+            <div class="result-container">
+
+                <h3>Translation</h3>
+
+                <div id="result">
+                    Your translation will appear here.
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+
+</html>
