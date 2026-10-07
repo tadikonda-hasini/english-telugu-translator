@@ -1,5 +1,2 @@
 Flask
-torch
-transformers
-sentencepiece
-gunicorn
+requests

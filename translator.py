@@ -1,34 +1,27 @@
-from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
-
-MODEL_NAME = "facebook/nllb-200-distilled-600M"
-
-print("Loading translation model...")
-
-tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
-
-model = AutoModelForSeq2SeqLM.from_pretrained(MODEL_NAME)
-
-print("Translation model loaded!")
+import requests
+from urllib.parse import quote
 
 
 def translate_text(text, source, target):
+    if source == "eng_Latn" and target == "tel_Telu":
+        langpair = "en|te"
+    elif source == "tel_Telu" and target == "eng_Latn":
+        langpair = "te|en"
+    else:
+        raise ValueError("Unsupported language pair")
 
-    tokenizer.src_lang = source
+    url = "https://api.mymemory.translated.net/get"
+    params = {
+        "q": text,
+        "langpair": langpair
+    }
 
-    inputs = tokenizer(
-        text,
-        return_tensors="pt"
-    )
+    response = requests.get(url, params=params, timeout=30)
+    response.raise_for_status()
 
-    translated_tokens = model.generate(
-        **inputs,
-        forced_bos_token_id=tokenizer.convert_tokens_to_ids(target),
-        max_length=200
-    )
+    data = response.json()
 
-    translation = tokenizer.batch_decode(
-        translated_tokens,
-        skip_special_tokens=True
-    )[0]
+    if data.get("responseStatus") != 200:
+        raise Exception("Translation API failed")
 
-    return translation
+    return data["responseData"]["translatedText"]
